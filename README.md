@@ -21,7 +21,7 @@ The AI-Powered Learning System is an intelligent educational platform designed t
 ## Technology Stack
 
 - **Backend:** Python (Flask/Django), TensorFlow/PyTorch (for AI)
-- **Frontend:** React/Angular/Vue.js
+- **Frontend:** Flutter
 - **Database:** PostgreSQL/MongoDB
 - **AI Models:** NLP models for tutoring, Recommendation systems, and Adaptive learning engines
 - **Deployment:** Docker, AWS/GCP/Azure
@@ -30,5 +30,5 @@ The AI-Powered Learning System is an intelligent educational platform designed t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/ai-powered-learning-system.git
+   git clone https://github.com/KanujanKing777/HiQ.git
 
