@@ -1,4 +1,4 @@
-# hiq
+# Hiq
 
 ## Getting Started
 
