@@ -1,6 +1,6 @@
 # hiq
 
-A new Flutter project.
+HiQ
 
 ## Getting Started
 
