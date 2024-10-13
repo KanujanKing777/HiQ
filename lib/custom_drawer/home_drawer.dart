@@ -19,11 +19,7 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList>? drawerList;
-  @override
-  void initState() {
-    setDrawerListArray();
-    super.initState();
-  }
+ 
 
   void setDrawerListArray() {
     drawerList = <DrawerList>[

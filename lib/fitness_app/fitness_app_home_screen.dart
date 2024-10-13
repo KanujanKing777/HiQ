@@ -41,27 +41,8 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: FitnessAppTheme.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return Stack(
-                children: <Widget>[
-                  tabBody,
-                  bottomBar(),
-                ],
-              );
-            }
-          },
-        ),
-      ),
-    );
+    return 
+                  bottomBar();
   }
 
   Future<bool> getData() async {
@@ -72,9 +53,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   Widget bottomBar() {
     return Column(
       children: <Widget>[
-        const Expanded(
-          child: SizedBox(),
-        ),
+        
         BottomBarView(
           tabIconsList: tabIconsList,
           addClick: () {},
@@ -106,3 +85,4 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     );
   }
 }
+

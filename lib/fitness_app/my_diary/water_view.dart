@@ -1,6 +1,6 @@
 import 'package:hiq/fitness_app/ui_view/wave_view.dart';
 import 'package:hiq/fitness_app/fitness_app_theme.dart';
-import 'package:hiq/main.dart';
+import 'package:hiq/main3.dart';
 import 'package:flutter/material.dart';
 import 'package:hiq/main2.dart';
 

@@ -1,10 +1,10 @@
 import 'package:hiq/fitness_app/fitness_app_theme.dart';
 import 'package:hiq/fitness_app/models/meals_list_data.dart';
-import 'package:hiq/main.dart';
+import 'package:hiq/main3.dart';
 import 'package:flutter/material.dart';
 import 'package:hiq/main2.dart';
 
-import '../../main.dart';
+import '../../main3.dart';
 
 class MealsListView extends StatefulWidget {
   const MealsListView(

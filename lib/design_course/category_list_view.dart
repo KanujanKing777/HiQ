@@ -1,6 +1,6 @@
 import 'package:hiq/design_course/design_course_app_theme.dart';
 import 'package:hiq/design_course/models/category.dart';
-import 'package:hiq/main.dart';
+import 'package:hiq/main3.dart';
 import 'package:flutter/material.dart';
 import 'package:hiq/main2.dart';
 

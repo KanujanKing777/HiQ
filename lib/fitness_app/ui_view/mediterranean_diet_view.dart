@@ -1,5 +1,5 @@
 import 'package:hiq/fitness_app/fitness_app_theme.dart';
-import 'package:hiq/main.dart';
+import 'package:hiq/main3.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
