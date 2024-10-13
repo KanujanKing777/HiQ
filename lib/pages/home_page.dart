@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hiq/courses.dart';
+import 'package:hiq/pages/course_detail_page.dart';
 import 'package:hiq/custom_drawer/home_drawer.dart';
+import 'package:hiq/help_screen.dart';
+import 'package:hiq/invite_friend_screen.dart';
+import 'package:hiq/profile.dart';
+import 'package:hiq/progress.dart';
+import 'package:hiq/screens/Login/login_screen.dart';
+import 'package:hiq/settings.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:hiq/constant/data_json.dart';
-import 'package:hiq/pages/course_detail_page.dart';
 import 'package:hiq/theme/colors.dart';
-import 'package:hiq/fitness_app/fitness_app_home_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -65,7 +71,12 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: buildDrawer(context),
-      body: getBody(),
+      body: _currentIndex == 0 ? getBody() : 
+      _currentIndex == 1 ? CoursesPage(): 
+      ProfilePage(
+        userName: "Kanujan", 
+        userEmail: "kanujanking@gmail.com", 
+        profilePicture: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),
       bottomNavigationBar: BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: (int index) {
@@ -79,12 +90,13 @@ class _HomePageState extends State<HomePage> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
+          icon: Icon(Icons.book),
+          label: 'Courses',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
+          
         ),
       ],
     )
@@ -108,45 +120,42 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           // Drawer Items
-          ListTile(
-            leading: Icon(Icons.library_books),
-            title: Text("Courses"),
-            onTap: () {
-              // Navigate to Courses page
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text("Profile"),
-            onTap: () {
-              // Navigate to Profile page
-              Navigator.pop(context);
-            },
-          ),
+         
+         
           ListTile(
             leading: Icon(Icons.settings),
             title: Text("Settings"),
             onTap: () {
               // Navigate to Settings page
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+          ),
+           ListTile(
+            leading: Icon(Icons.people),
+            title: Text("Invite Friends"),
+            onTap: () {
+              // Navigate to Profile page
+              Navigator.push(context, MaterialPageRoute(builder: (context) => InviteFriend()));
             },
           ),
           ListTile(
             leading: Icon(Icons.help),
             title: Text("Help & Support"),
             onTap: () {
-              // Navigate to Help & Support page
-              Navigator.pop(context);
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => HelpScreen()
+                )
+              );
             },
           ),
-          Divider(), // Adds a divider line
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text("Logout"),
             onTap: () {
               // Logout action
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
         ],
@@ -157,15 +166,22 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 40),
       children: <Widget>[
-        Text("Hey SopheaMen,",style: TextStyle(
+        Text("Hey John Doe,",style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w600
         ),),
-        SizedBox(height: 15,),
+                SizedBox(height: 15,),
+
+        Text("Continue your courses",style: TextStyle(
+          fontSize: 18
+        ),),
+        StudentProgress(studentName: "Physics", progress:0.75),
+
+        SizedBox(height: 40,),
         Text("Find a course you want to learn",style: TextStyle(
           fontSize: 18
         ),),
-        SizedBox(height: 40,),
+        SizedBox(height: 15,),
         Container(
           height: 60,
           decoration: BoxDecoration(
