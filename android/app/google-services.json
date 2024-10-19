@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509038035156",
+    "project_id": "hiqthelearningapp",
+    "storage_bucket": "hiqthelearningapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509038035156:android:9ecc4658accd071435bb41",
+        "android_client_info": {
+          "package_name": "com.example.hiq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCXXQtSuFcB9Gpd8M8C7AYsCeK84Cre7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

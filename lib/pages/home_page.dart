@@ -11,9 +11,13 @@ import 'package:hiq/screens/Login/login_screen.dart';
 import 'package:hiq/settings.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:hiq/constant/data_json.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:hiq/theme/colors.dart';
-
+import 'package:hiq/screens/Login/components/login_form.dart';
 class HomePage extends StatefulWidget {
+  late User user;
+  HomePage({required this.user});
   @override
   _HomePageState createState() => _HomePageState();
 }
