@@ -18,6 +18,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   String? email;
   String? password;
+  String? name;
+  String profilepic = "https://wallpapers.com/images/high/cool-skull-profile-picture-j6r78po6xuuton85.webp";
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,45 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
+          TextFormField(
+            keyboardType: TextInputType.name,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            onSaved: (newName) {
+              name = newName; // Save email
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your name';
+              }
+              return null;
+            },
+            decoration: const InputDecoration(
+              hintText: "Name",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+          TextFormField(
+            keyboardType: TextInputType.url,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            onSaved: (newLink) {
+              if(newLink != null){
+                profilepic = newLink;
+              } // Save email
+            },
+            
+            decoration: const InputDecoration(
+              hintText: "Profile Pic URL",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -80,10 +121,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 _formKey.currentState!.save();
                 try {
                   // Register the user with Firebase Auth
-                  await _auth.createUserWithEmailAndPassword(
+                  UserCredential king = await _auth.createUserWithEmailAndPassword(
                     email: email!,
                     password: password!,
+                    
                   );
+                  await king.user?.updateDisplayName(name);
+                  await king.user?.updatePhotoURL(profilepic);
+
                   // Navigate to the login screen after successful sign up
                   Navigator.push(context, 
                     MaterialPageRoute(builder: (context) => const LoginScreen()),

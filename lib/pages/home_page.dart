@@ -16,7 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hiq/theme/colors.dart';
 import 'package:hiq/screens/Login/components/login_form.dart';
 class HomePage extends StatefulWidget {
-  late User user;
+  final User user;
   HomePage({required this.user});
   @override
   _HomePageState createState() => _HomePageState();
@@ -50,37 +50,56 @@ class _HomePageState extends State<HomePage> {
       screenIndex = index;
     });
   }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: white,
-              
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            
-            Container(
-              width: 40,
-              height: 40,
+        leading: GestureDetector(
+          onTap: () => _scaffoldKey.currentState?.openDrawer(),
+          child: Container(
+              margin: EdgeInsets.only(left: 10.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(image: NetworkImage("https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),fit: BoxFit.cover)
+                image: DecorationImage(image: NetworkImage(widget.user.photoURL!),fit: BoxFit.cover)
               ),
-            )
-          ],
+            ),
         ),
+        
       ),
       drawer: buildDrawer(context),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.all(Radius.circular(10))
+        ),
+        child:IconButton(
+        icon: Icon(
+          Icons.chat,
+          color: Colors.white,
+          size:30,
+        ),
+        onPressed: (){
+          Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => HelpScreen()
+                )
+              );
+        },
+      ),
+      ),
       body: _currentIndex == 0 ? getBody() : 
       _currentIndex == 1 ? CoursesPage(): 
       ProfilePage(
-        userName: "Kanujan", 
-        userEmail: "kanujanking@gmail.com", 
-        profilePicture: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),
+        userName: widget.user.displayName!, 
+        userEmail: widget.user.email!, 
+        profilePicture: widget.user.photoURL!),
       bottomNavigationBar: BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: (int index) {
@@ -114,10 +133,10 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           // Drawer Header
           UserAccountsDrawerHeader(
-            accountName: Text("John Doe"),
-            accountEmail: Text("john.doe@example.com"),
+            accountName: Text("${widget.user.displayName}"),
+            accountEmail: Text("${widget.user.email}"),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage("https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"), // Add a profile picture here
+              backgroundImage: NetworkImage(widget.user.photoURL!), // Add a profile picture here
             ),
             decoration: BoxDecoration(
               color: Colors.blueAccent,
@@ -170,7 +189,7 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 40),
       children: <Widget>[
-        Text("Hey John Doe,",style: TextStyle(
+        Text("Hey ${widget.user.displayName},",style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w600
         ),),
