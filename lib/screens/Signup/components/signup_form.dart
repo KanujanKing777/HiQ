@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth package
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
@@ -128,7 +128,23 @@ class _SignUpFormState extends State<SignUpForm> {
                   );
                   await king.user?.updateDisplayName(name);
                   await king.user?.updatePhotoURL(profilepic);
+                  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+                  bool darkMode = true;
+                  String selectedCourse = "";
+                  String selectedLanguage = "English";
+                  bool notificationsEnabled = true;
+                  try {
+                    await _firestore.collection('users').doc(email).set({
+                      'darkMode': darkMode,
+                      'selectedCourse': selectedCourse,
+                      'selectedLanguage': selectedLanguage,
+                      'notificationsEnabled':notificationsEnabled
+                    }, SetOptions(merge: true)); // Merge if the document already exists
+                    print("User preferences saved successfully!");
+                  } catch (e) {
+                    print("Error saving user preferences: $e");
+                  }
                   // Navigate to the login screen after successful sign up
                   Navigator.push(context, 
                     MaterialPageRoute(builder: (context) => const LoginScreen()),

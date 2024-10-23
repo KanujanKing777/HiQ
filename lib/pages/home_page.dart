@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             title: Text("Settings"),
             onTap: () {
               // Navigate to Settings page
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(widget.user.email??"")));
             },
           ),
            ListTile(

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class SettingsPage extends StatefulWidget {
+  String email = "";
+
+  SettingsPage(this.email);
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -9,7 +15,25 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isDarkMode = false;
   bool _notificationsEnabled = true;
   String _selectedLanguage = 'English';
+  String userId = ""; 
+  // Get the user ID from Firebase Auth
+  @override
+  void initState() {
+    super.initState();
+    userId = widget.email.toString(); // Call this in initState to load data
+    _loadUserPreferences();
+  }
 
+Future<void> _loadUserPreferences() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (doc.exists) {
+      setState(() {
+        _isDarkMode = doc['darkMode'] ?? false;
+        _notificationsEnabled = doc['notificationsEnabled'] ?? true;
+        _selectedLanguage = doc['selectedLanguage'] ?? 'English';
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
