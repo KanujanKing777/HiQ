@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hiq/constant/data_json.dart';
 import 'package:hiq/pages/course_detail_page.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:hiq/pages/home_page.dart';
 import 'package:hiq/theme/colors.dart';
 
 class CoursesPage extends StatelessWidget {
+  User user;
+  CoursesPage({required this.user});
   // Sample course data
   final List<Map<String, dynamic>> courses = [
     {
@@ -114,6 +118,7 @@ class CoursesPage extends StatelessWidget {
                                     builder: (context) => CourseDetailPage(
                                       imgDetail: course['image'],
                                       title: course['title'],
+                                      user: user,
                                     ),
                                   ),
                                 );

@@ -12,10 +12,7 @@ const List online_data_one = [
     "courses" : "13 Units",
     "img" : "assets/images/photography.png",
     "img_detail" : "assets/images/photography_detail.png"
-  }
-];
-
-const List online_data_two = [
+  },
   {
     "id": "3",
     "title" : "Mathematics",
@@ -30,6 +27,10 @@ const List online_data_two = [
     "img" : "assets/images/business.png",
     "img_detail" : "assets/images/business_detail.png"
   }
+];
+
+const List online_data_two = [
+  
 ];
 
 const List course_content = [

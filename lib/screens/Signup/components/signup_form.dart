@@ -20,10 +20,12 @@ class _SignUpFormState extends State<SignUpForm> {
   String? password;
   String? name;
   String profilepic = "https://wallpapers.com/images/high/cool-skull-profile-picture-j6r78po6xuuton85.webp";
+  String? Grade;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return SingleChildScrollView(child:
+    Form(
       key: _formKey,
       child: Column(
         children: [
@@ -62,10 +64,41 @@ class _SignUpFormState extends State<SignUpForm> {
               hintText: "Profile Pic URL",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
+                child: Icon(Icons.photo),
               ),
             ),
           ),
+          
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+          SizedBox(width: 15,),
+          Icon(Icons.school), // Prefix icon
+          SizedBox(width: 8,),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: DropdownButton<String>(
+          hint: 
+                Text("Select Grade"),
+          
+          value: Grade,
+          isExpanded: true,
+          items: <String>["6", "7", "8", "9",
+          "10", "11"].map((String grade) {
+            return DropdownMenuItem<String>(
+              value: grade,
+              child: Text("Grade " + grade),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              Grade = newValue;
+            });
+          },
+        ),),
+          ]),
+          
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -83,7 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
               hintText: "Your email",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
+                child: Icon(Icons.email),
               ),
             ),
           ),
@@ -139,7 +172,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       'darkMode': darkMode,
                       'selectedCourse': selectedCourse,
                       'selectedLanguage': selectedLanguage,
-                      'notificationsEnabled':notificationsEnabled
+                      'notificationsEnabled':notificationsEnabled,
+                      'grade':Grade
                     }, SetOptions(merge: true)); // Merge if the document already exists
                     print("User preferences saved successfully!");
                   } catch (e) {
@@ -175,6 +209,6 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

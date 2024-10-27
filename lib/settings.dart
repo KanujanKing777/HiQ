@@ -21,11 +21,12 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     userId = widget.email.toString(); // Call this in initState to load data
-    _loadUserPreferences();
+    _loadUserPreferences("load");
   }
 
-Future<void> _loadUserPreferences() async {
-    DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+Future<void> _loadUserPreferences(String matter) async {
+  DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+  if(matter=="load"){
     if (doc.exists) {
       setState(() {
         _isDarkMode = doc['darkMode'] ?? false;
@@ -33,7 +34,20 @@ Future<void> _loadUserPreferences() async {
         _selectedLanguage = doc['selectedLanguage'] ?? 'English';
       });
     }
+  }else if(matter=="darkmode"){
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'darkMode':_isDarkMode
+    });
+  }else if(matter=="notifications"){
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'notificationsEnabled':_notificationsEnabled
+    });
+  }else if(matter=="language"){
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'selectedLanguage':_selectedLanguage
+    });
   }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +64,7 @@ Future<void> _loadUserPreferences() async {
             onChanged: (bool value) {
               setState(() {
                 _isDarkMode = value;
+                _loadUserPreferences("darkmode");
               });
               // Implement dark mode switching logic
             },
@@ -64,6 +79,7 @@ Future<void> _loadUserPreferences() async {
             onChanged: (bool value) {
               setState(() {
                 _notificationsEnabled = value;
+                _loadUserPreferences("notifications");
               });
             },
             secondary: Icon(_notificationsEnabled ? Icons.notifications_active : Icons.notifications_off),
@@ -76,6 +92,7 @@ Future<void> _loadUserPreferences() async {
             subtitle: Text(_selectedLanguage),
             onTap: () {
               _showLanguageDialog();
+              _loadUserPreferences("language");
             },
             leading: Icon(Icons.language),
             trailing: Icon(Icons.arrow_forward_ios),

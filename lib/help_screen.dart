@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+
+// Access your API key as an environment variable (see "Set up your API key" above)
+final apiKey = 'AIzaSyAMr6gYkI6ZAqSdAAz67xRtfogvYJbALTw';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -16,15 +20,24 @@ class _HelpScreenState extends State<HelpScreen> {
     _messages.add({'sender': 'bot', 'message': 'How can we assist you today?'});
   }
 
-  void _sendMessage(String text) {
+  void _sendMessage(String text) async{
     if (text.trim().isEmpty) return;
+    final model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: apiKey,
+      );
+    final prompt = text;
+    final response = await model.generateContent([Content.text(prompt)]);
     setState(() {
       _messages.add({'sender': 'user', 'message': text});
       _messages.add({
         'sender': 'bot',
-        'message': 'It looks like you are experiencing problems with our sign-up process. We are here to help, so please get in touch with us.'
+        'message': '${response.text}'
       });
       _controller.clear();
+      // Make sure to include this import:
+// import 'package:google_generative_ai/google_generative_ai.dart';
+      
     });
   }
 
@@ -53,7 +66,7 @@ class _HelpScreenState extends State<HelpScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help Chatbot', style: TextStyle(color: Colors.white),),
+        title: Text('Chatbot', style: TextStyle(color: Colors.white),),
         backgroundColor: isLightMode ? Colors.blue : Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
       ),
