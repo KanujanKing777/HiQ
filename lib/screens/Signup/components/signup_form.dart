@@ -85,7 +85,7 @@ class _SignUpFormState extends State<SignUpForm> {
           value: Grade,
           isExpanded: true,
           items: <String>["6", "7", "8", "9",
-          "10", "11"].map((String grade) {
+          "10", "11", "12", "13"].map((String grade) {
             return DropdownMenuItem<String>(
               value: grade,
               child: Text("Grade " + grade),
