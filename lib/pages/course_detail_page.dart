@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hiq/constant/data_json.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:hiq/content/content.dart';
 import 'package:hiq/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class CourseDetailPage extends StatefulWidget {
   final String imgDetail;
   final String title;
-  User user;
+  final User user;
   CourseDetailPage({this.imgDetail = "", this.title = "", required this.user});
 
   @override
@@ -163,6 +164,17 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                     return ListTile(
                                       title: Text(data['topic'] ?? 'No title'),
                                       subtitle: Text((data['content'].toString().split(' ').length / 150).round().toString() + ' min'),
+                                      onTap: (){
+                                        Navigator.push(
+                                          context, 
+                                          MaterialPageRoute(builder: (context) => ContentPage(
+                                            title: data['topic'],
+                                            description: data['description'],
+                                            item: data['content'],
+                                            user: widget.user,
+                                          ))
+                                        );
+                                      },
                                     );
                                   },
                                 ),
