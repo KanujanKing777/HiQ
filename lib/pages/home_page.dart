@@ -92,7 +92,8 @@ class _HomePageState extends State<HomePage> {
               : ProfilePage(
                   userName: widget.user.displayName!,
                   userEmail: widget.user.email!,
-                  profilePicture: widget.user.photoURL!),
+                  profilePicture: widget.user.photoURL!,
+                ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (int index) {

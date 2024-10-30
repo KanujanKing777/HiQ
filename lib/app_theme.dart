@@ -22,13 +22,13 @@ static const Color spacer = Color(0xFF1F1F1F); // Dark spacer color for sections
   static const String fontName = 'WorkSans';
 
   static const TextTheme textTheme = TextTheme(
-    headline4: display1,
-    headline5: headline,
-    headline6: title,
-    subtitle2: subtitle,
-    bodyText2: body2,
-    bodyText1: body1,
-    caption: caption,
+    headlineLarge: display1,
+    headlineMedium: headline,
+    headlineSmall: title,
+    displayLarge: subtitle,
+    bodyLarge: body2,
+    bodySmall: body1,
+    displaySmall: caption,
   );
 
   static const TextStyle display1 = TextStyle( // h4 -> display1

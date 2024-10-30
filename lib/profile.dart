@@ -121,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                 );
               },
               child: Text('Logout', style: TextStyle(color: Colors.white),),
-              style: ElevatedButton.styleFrom(primary: Colors.red),
+              style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
             ),
           
           ],
