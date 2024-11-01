@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _notificationsEnabled = true;
   String _selectedLanguage = 'English';
   String userId = ""; 
+  String grade = "";
   // Get the user ID from Firebase Auth
   @override
   void initState() {
@@ -32,6 +34,7 @@ Future<void> _loadUserPreferences(String matter) async {
         _isDarkMode = doc['darkMode'] ?? false;
         _notificationsEnabled = doc['notificationsEnabled'] ?? true;
         _selectedLanguage = doc['selectedLanguage'] ?? 'English';
+        grade = doc['grade'] ?? "";
       });
     }
   }else if(matter=="darkmode"){
@@ -45,6 +48,10 @@ Future<void> _loadUserPreferences(String matter) async {
   }else if(matter=="language"){
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
       'selectedLanguage':_selectedLanguage
+    });
+  }else if(matter=="grade"){
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'grade':grade
     });
   }
 }
@@ -66,7 +73,6 @@ Future<void> _loadUserPreferences(String matter) async {
                 _isDarkMode = value;
                 _loadUserPreferences("darkmode");
               });
-              // Implement dark mode switching logic
             },
             secondary: Icon(_isDarkMode ? Icons.dark_mode : Icons.light_mode),
           ),
@@ -98,8 +104,20 @@ Future<void> _loadUserPreferences(String matter) async {
             trailing: Icon(Icons.arrow_forward_ios),
           ),
           Divider(),
-          
-          // Other settings can be added here
+
+          // Grade Selection
+          Text("Grade"),
+          TextField(
+            maxLines: 1,
+            decoration: InputDecoration(
+              hintText: grade,
+            ),
+            onChanged: (value){
+              setState(() {
+                grade = value;
+              });
+            },
+          )
         ],
       ),
     );

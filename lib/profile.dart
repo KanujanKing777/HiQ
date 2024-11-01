@@ -65,6 +65,7 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  
                   Text(
                     'Courses You Are Learning',
                     style: TextStyle(

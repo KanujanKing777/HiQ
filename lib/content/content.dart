@@ -62,7 +62,7 @@ class _CourseState extends State<ContentPage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
+                child: SelectableText(
                   widget.description,
                   style: TextStyle(fontSize: 18, color: Colors.grey[700]),
                   textAlign: TextAlign.center,
@@ -78,7 +78,7 @@ class _CourseState extends State<ContentPage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
+                child: SelectableText(
                   widget.itemcontent,
                   style: TextStyle(fontSize: 18, color: Colors.grey[700]),
                   textAlign: TextAlign.justify,
