@@ -24,7 +24,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     super.initState();
     loadDataFromFirestore();
   }
- Future<void> loadDataFromFirestore() async {
+
+  Future<void> loadDataFromFirestore() async {
     try {
       // Reference your Firestore document
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
@@ -40,6 +41,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       print("Error loading data: $e");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +142,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                           // Fetch Course Data from Firestore
                           FutureBuilder<QuerySnapshot>(
                             future: FirebaseFirestore.instance
-                                .collection(grade!+" "+widget.title)
+                                .collection(grade! + " " + widget.title)
                                 .get(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
@@ -151,28 +153,49 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               if (!snapshot.hasData || snapshot.data == null) {
                                 return Center(child: Text('No data found'));
                               }
-
                               var documents = snapshot.data!.docs;
                               return SizedBox(
                                 height: 300, // Adjusted to fit content properly
                                 child: ListView.builder(
                                   itemCount: documents.length,
                                   itemBuilder: (context, index) {
-                                    var data = documents[index].data()
-                                        as Map<String, dynamic>;
+                                    var data = documents[index].data as Map<String, dynamic>;
 
                                     return ListTile(
-                                      title: Text(data['topic'] ?? 'No title'),
-                                      subtitle: Text((data['content'].toString().split(' ').length / 150).round().toString() + ' min'),
-                                      onTap: (){
+                                      title: Row(
+                                        children: [
+                                          Checkbox(
+                                            value:
+                                              data['status'] == "finished" ? true : false, // Replace with a variable to manage the checkbox state
+                                            onChanged: (bool? value) {
+                                              // Handle checkbox state change
+                                            },
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              data['topic'] ?? 'Untitled',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight
+                                                      .bold), // Optional: make title bold
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      subtitle: Text('${(data['content'].toString().split(' ').length / 150).round()} min'),
+                                      onTap: () {
                                         Navigator.push(
-                                          context, 
-                                          MaterialPageRoute(builder: (context) => ContentPage(
-                                            title: data['topic'],
-                                            description: data['description'],
-                                            item: data['content'],
-                                            user: widget.user,
-                                          ))
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ContentPage(
+                                              title: data['topic'],
+                                              description: data['description'],
+                                              item: data['content'],
+                                              data: FirebaseFirestore.instance
+                                                  .collection("${grade!} ${widget.title}")
+                                                  .doc(snapshot.data!.docs[index].id),
+                                              user: widget.user,
+                                            ),
+                                          ),
                                         );
                                       },
                                     );
