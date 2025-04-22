@@ -11,6 +11,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Background(
+      
       child: SingleChildScrollView(
         child: Responsive(
           mobile: MobileLoginScreen(),
@@ -47,6 +48,7 @@ class MobileLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Padding(
+          
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),

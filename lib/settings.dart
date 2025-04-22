@@ -106,18 +106,44 @@ Future<void> _loadUserPreferences(String matter) async {
           Divider(),
 
           // Grade Selection
-          Text("Grade"),
-          TextField(
-            maxLines: 1,
-            decoration: InputDecoration(
-              hintText: grade,
+          Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
             ),
-            onChanged: (value){
-              setState(() {
-                grade = value;
-              });
-            },
-          )
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Grade",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    hintText: grade,
+                    hintStyle: TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      grade = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

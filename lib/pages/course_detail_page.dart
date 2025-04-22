@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:hiq/constant/data_json.dart';
 import 'package:hiq/content/content.dart';
+import 'package:hiq/content/enroll.dart';
 import 'package:hiq/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,6 +46,21 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF1F1F1F),
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/images/arrow_icon.svg"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: getBody(),
     );
   }
@@ -52,169 +68,248 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget getBody() {
     var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
+        child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Stack(
-            children: <Widget>[
-              // Image in the background
-              Positioned.fill(
-                bottom: 260,
-                child: Container(
-                  height: size.height * 0.45,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(widget.imgDetail),
-                      fit: BoxFit.cover,
-                    ),
+          const SizedBox(height: 15),
+          // Image Section
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              widget.imgDetail,
+              fit: BoxFit.cover,
+              height: size.height * 0.3,
+              width: double.infinity,
+            ),
+          ),
+          const SizedBox(height: 25),
+
+          // Add Course Section
+          Container(
+            width: size.width,
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF1D4350),
+                  Color(0xFF1A3C44),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Easily add new courses to your library.",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                AddCoursePage()
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 25),
+
+          // Content Section
+          Container(
+            width: size.width,
+            height: size.height * 0.6,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF0F2027),
+                  Color(0xFF203A43),
+                  Color(0xFF2C5364),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              // Content and Course Details
-              Column(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SafeArea(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon:
-                              SvgPicture.asset("assets/images/arrow_icon.svg"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        IconButton(
-                          icon: SvgPicture.asset("assets/images/more_icon.svg"),
-                          onPressed: () {},
-                        ),
-                      ],
+                  const Text(
+                    "Learning Pathway",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          widget.title,
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Row(
-                          children: <Widget>[
-                            buildInfoRow("assets/images/user_icon.svg", "18k"),
-                            SizedBox(width: 25),
-                            buildInfoRow("assets/images/star_icon.svg", "4.8"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Course Content Section
-                  Container(
-                    margin: EdgeInsets.only(top: size.height * 0.40),
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60),
-                      ),
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 50),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Course Content",
+                  const SizedBox(height: 20),
+                  FutureBuilder<QuerySnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection("data")
+                        .doc(grade)
+                        .collection("Science")
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const Center(
+                          child: Text(
+                            'No data found',
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 40),
-                          // Fetch Course Data from Firestore
-                          FutureBuilder<QuerySnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection(grade! + " " + widget.title)
-                                .get(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              if (!snapshot.hasData || snapshot.data == null) {
-                                return Center(child: Text('No data found'));
-                              }
-                              var documents = snapshot.data!.docs;
-                              return SizedBox(
-                                height: 300, // Adjusted to fit content properly
-                                child: ListView.builder(
-                                  itemCount: documents.length,
-                                  itemBuilder: (context, index) {
-                                    var data = documents[index].data as Map<String, dynamic>;
-
-                                    return ListTile(
-                                      title: Row(
-                                        children: [
-                                          Checkbox(
-                                            value:
-                                              data['status'] == "finished" ? true : false, // Replace with a variable to manage the checkbox state
-                                            onChanged: (bool? value) {
-                                              // Handle checkbox state change
-                                            },
+                        );
+                      }
+                      var documents = snapshot.data!.docs;
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: documents.asMap().entries.map((entry) {
+                              var data =
+                                  entry.value.data() as Map<String, dynamic>;
+                              final isLast = entry.key == documents.length - 1;
+                              return Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ContentPage(
+                                            title: data['title'],
+                                            url: data['drivelink'],
+                                            user: widget.user,
                                           ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  const Color(0xFF1D4350),
+                                                  const Color(0xFF1A3C44),
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  offset: const Offset(4, 4),
+                                                  blurRadius: 10,
+                                                )
+                                              ],
+                                            ),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.book,
+                                                color: Colors.blue[300],
+                                                size: 28,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 20),
                                           Expanded(
-                                            child: Text(
-                                              data['topic'] ?? 'Untitled',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight
-                                                      .bold), // Optional: make title bold
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  data['title'] ?? 'Untitled',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  '${(data['description'].toString().split(' ').length / 150).ceil()} min',
+                                                  style: TextStyle(
+                                                    color: Colors.grey[300],
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
-                                      subtitle: Text('${(data['content'].toString().split(' ').length / 150).round()} min'),
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ContentPage(
-                                              title: data['topic'],
-                                              description: data['description'],
-                                              item: data['content'],
-                                              data: FirebaseFirestore.instance
-                                                  .collection("${grade!} ${widget.title}")
-                                                  .doc(snapshot.data!.docs[index].id),
-                                              user: widget.user,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  ),
+                                  if (!isLast)
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 50),
+                                      width: 2,
+                                      height: 30,
+                                      color: Colors.blue[300],
+                                    ),
+                                ],
                               );
-                            },
+                            }).toList(),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget buildInfoRow(String iconPath, String text) {

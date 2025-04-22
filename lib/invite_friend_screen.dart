@@ -36,7 +36,7 @@ class _InviteFriendState extends State<InviteFriend> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isLightMode ? Colors.black : Colors.white,
+                color: Colors.white,
               ),
             ),
           ),
@@ -47,7 +47,7 @@ class _InviteFriendState extends State<InviteFriend> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                color: isLightMode ? Colors.black : Colors.white,
+                color: Colors.white,
               ),
             ),
           ),
